@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.e_rho.architecturetesting.Injection;
@@ -28,6 +29,7 @@ public class AlphaFragment extends Fragment implements AlphaContract.View {
     private AlphaPresenter mAlphaPresenter;
     private ListView mListView;
     private ArrayAdapter<String> mAdapter;
+    private Button mButton;
 
     public static AlphaFragment newInstance() {
         return new AlphaFragment();
@@ -42,6 +44,13 @@ public class AlphaFragment extends Fragment implements AlphaContract.View {
         mAdapter = new ArrayAdapter<>(getActivity(), R.layout.listview_string);
         mListView.setAdapter(mAdapter);
 
+        mButton = (Button)view.findViewById(R.id.button);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
 
         mAlphaPresenter = new AlphaPresenter(this, Injection.provideDataModel(getContext()));
 
