@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ArchitectureTesting</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="alpha_fragment">Alpha Fragment</string>
+    <string name="beta_fragment">Beta Fragment</string>
+    <string name="gamma_fragment">Gamma Fragment</string>
+
+    <string name="filler">Filler</string>
+    <string name="add_string">Add String</string>
+</resources>
