@@ -10,14 +10,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.example.e_rho.architecturetesting.alpha.AlphaFragment;
 import com.example.e_rho.architecturetesting.beta.BetaFragment;
 import com.example.e_rho.architecturetesting.gamma.GammaFragment;
+import com.example.e_rho.architecturetesting.gamma.GammaPresenter;
 import com.example.e_rho.architecturetesting.model.DataModel;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CentralNavigator {
     private static final String TAG = "Eric-Main";
 
     private BottomNavigationView mBottomNavView;
@@ -109,11 +109,19 @@ public class MainActivity extends AppCompatActivity {
         } else {
             mGammaFragment = GammaFragment.newInstance();
         }
+
+        GammaPresenter gammaPresenter = new GammaPresenter(mGammaFragment, mDataModel);
+        mGammaFragment.setPresenter(gammaPresenter);
     }
 
     @NonNull
     private String getFragmentTag(int viewPagerId, int fragmentPosition) {
         return "android:switcher:" + viewPagerId + ":" + fragmentPosition;
+    }
+
+    @Override
+    public void switchToView(int viewPosition) {
+        mViewPager.setCurrentItem(viewPosition);
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {

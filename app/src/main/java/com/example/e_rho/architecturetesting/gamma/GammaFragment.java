@@ -39,6 +39,7 @@ public class GammaFragment extends Fragment implements GammaContract.View{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
+//        mGammaPresenter = new GammaPresenter(this, Injection.provideDataModel(getContext()));
     }
 
     @Override
@@ -59,14 +60,16 @@ public class GammaFragment extends Fragment implements GammaContract.View{
             }
         });
 
-        mGammaPresenter = new GammaPresenter(this, Injection.provideDataModel(getContext()));
-
         return view;
     }
 
+    public void setPresenter(GammaPresenter presenter) {
+        mGammaPresenter = presenter;
+    }
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart");
         mGammaPresenter.start();
     }
 

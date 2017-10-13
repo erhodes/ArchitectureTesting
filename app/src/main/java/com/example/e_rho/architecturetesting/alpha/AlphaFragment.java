@@ -13,9 +13,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.e_rho.architecturetesting.CentralNavigator;
 import com.example.e_rho.architecturetesting.Injection;
 import com.example.e_rho.architecturetesting.R;
-import com.example.e_rho.architecturetesting.model.DataModel;
 
 import java.util.List;
 
@@ -30,14 +30,41 @@ public class AlphaFragment extends Fragment implements AlphaContract.View {
     private ListView mListView;
     private ArrayAdapter<String> mAdapter;
     private Button mButton;
+    private CentralNavigator mNavigator;
 
     public static AlphaFragment newInstance() {
         return new AlphaFragment();
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(TAG,"onAttach");
+
+        try {
+            mNavigator = (CentralNavigator)context;
+        } catch (ClassCastException ex) {
+            Log.d(TAG, "This fragment needs to be attached to a CentralNavigator");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG,"onDetach");
+        mNavigator = null;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG,"onCreateView");
         View view = inflater.inflate(R.layout.fragment_alpha, container, false);
 
         mListView = (ListView)view.findViewById(R.id.list_view);
@@ -48,7 +75,7 @@ public class AlphaFragment extends Fragment implements AlphaContract.View {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                mNavigator.switchToView(CentralNavigator.FRAGMENT_GAMMA);
             }
         });
 
