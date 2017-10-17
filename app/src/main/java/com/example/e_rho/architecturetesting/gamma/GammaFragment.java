@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.e_rho.architecturetesting.BaseFragment;
 import com.example.e_rho.architecturetesting.Injection;
 import com.example.e_rho.architecturetesting.R;
 import com.example.e_rho.architecturetesting.beta.BetaFragment;
@@ -23,7 +24,7 @@ import java.util.List;
  * Created by e_rho on 10/11/2017.
  */
 
-public class GammaFragment extends Fragment implements GammaContract.View{
+public class GammaFragment extends BaseFragment implements GammaContract.View{
     private static final String TAG = "Eric-Gamma";
 
     private GammaPresenter mGammaPresenter;
@@ -36,10 +37,13 @@ public class GammaFragment extends Fragment implements GammaContract.View{
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
-//        mGammaPresenter = new GammaPresenter(this, Injection.provideDataModel(getContext()));
+    public String getLogTag() {
+        return TAG;
+    }
+
+    @Override
+    public boolean printLogs() {
+        return true;
     }
 
     @Override
@@ -64,12 +68,16 @@ public class GammaFragment extends Fragment implements GammaContract.View{
     }
 
     public void setPresenter(GammaPresenter presenter) {
+        Log.d(TAG,"gamma presenter has been set");
         mGammaPresenter = presenter;
+        if (mGammaPresenter == null) {
+            Log.d(TAG,"what the heck");
+        }
     }
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart");
+        Log.d(TAG, "start");
         mGammaPresenter.start();
     }
 

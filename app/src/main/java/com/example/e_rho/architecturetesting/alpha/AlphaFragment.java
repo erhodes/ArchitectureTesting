@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.example.e_rho.architecturetesting.BaseFragment;
 import com.example.e_rho.architecturetesting.CentralNavigator;
 import com.example.e_rho.architecturetesting.Injection;
 import com.example.e_rho.architecturetesting.R;
@@ -23,42 +24,26 @@ import java.util.List;
  * Created by e_rho on 10/11/2017.
  */
 
-public class AlphaFragment extends Fragment implements AlphaContract.View {
+public class AlphaFragment extends BaseFragment implements AlphaContract.View {
     private static final String TAG = "Eric-AF";
 
     private AlphaPresenter mAlphaPresenter;
     private ListView mListView;
     private ArrayAdapter<String> mAdapter;
     private Button mButton;
-    private CentralNavigator mNavigator;
 
     public static AlphaFragment newInstance() {
         return new AlphaFragment();
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        Log.d(TAG,"onAttach");
-
-        try {
-            mNavigator = (CentralNavigator)context;
-        } catch (ClassCastException ex) {
-            Log.d(TAG, "This fragment needs to be attached to a CentralNavigator");
-        }
+    public String getLogTag() {
+        return TAG;
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d(TAG,"onDetach");
-        mNavigator = null;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
+    public boolean printLogs() {
+        return false;
     }
 
     @Override

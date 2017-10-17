@@ -12,7 +12,9 @@ import android.widget.Button;
  * Created by e_rho on 10/12/2017.
  */
 
-public class SubFragment1 extends Fragment {
+public class SubFragment1 extends BaseFragment {
+    private static final String TAG = "Eric-SubFragment1";
+
     private Button mButton;
 
     public static SubFragment1 newInstance() {
@@ -28,10 +30,20 @@ public class SubFragment1 extends Fragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO; go to subfragment 2
+                mNavigator.launchBetaSubFragment2();
             }
         });
 
         return view;
+    }
+
+    @Override
+    public String getLogTag() {
+        return TAG;
+    }
+
+    @Override
+    public boolean printLogs() {
+        return true;
     }
 }

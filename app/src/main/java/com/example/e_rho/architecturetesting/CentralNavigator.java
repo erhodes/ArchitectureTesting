@@ -10,4 +10,8 @@ public interface CentralNavigator {
     int FRAGMENT_GAMMA = 2;
 
     void switchToView(int viewPosition);
+
+    void launchBetaSubFragment1();
+    void launchBetaSubFragment2();
+    void launchAdapterSubFragment();
 }

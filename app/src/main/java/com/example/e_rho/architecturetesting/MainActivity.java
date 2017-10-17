@@ -13,9 +13,11 @@ import android.view.MenuItem;
 
 import com.example.e_rho.architecturetesting.alpha.AlphaFragment;
 import com.example.e_rho.architecturetesting.beta.BetaFragment;
+import com.example.e_rho.architecturetesting.delta.DeltaFragment;
 import com.example.e_rho.architecturetesting.gamma.GammaFragment;
 import com.example.e_rho.architecturetesting.gamma.GammaPresenter;
 import com.example.e_rho.architecturetesting.model.DataModel;
+import com.example.e_rho.architecturetesting.wrapper.WrapperFragment;
 
 public class MainActivity extends AppCompatActivity implements CentralNavigator {
     private static final String TAG = "Eric-Main";
@@ -24,7 +26,13 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
     private AlphaFragment mAlphaFragment;
     private BetaFragment mBetaFragment;
     private GammaFragment mGammaFragment;
+    private DeltaFragment mDeltaFragment;
+
+    private WrapperFragment mBetaWrapper;
+    private WrapperFragmentNavigator mBetaNavigator;
+
     private ViewPager mViewPager;
+    private ViewPagerAdapter mAdapter;
     private DataModel mDataModel;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -59,11 +67,13 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
         mDataModel = Injection.provideDataModel(this);
 
         if (savedInstanceState != null) {
-            Log.d("Eric","this is a wierd restart, with lingering fragments: " + getSupportFragmentManager().getFragments().size());
+            Log.d("Eric","this is a weird restart, with lingering fragments: " + getSupportFragmentManager().getFragments().size());
         }
 
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
-        mViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
+        mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mAdapter);
+//        mViewPager.setOffscreenPageLimit(3);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -88,6 +98,15 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
         Log.d("Eric","MainActivity onResume");
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mViewPager.getCurrentItem() == 1 && mBetaNavigator.onBackPressed()) {
+            return;
+        }
+        super.onBackPressed();
+//        mBetaWrapper.popFragment();
+    }
+
     protected void initializeFragments() {
         // look for an existing alpha fragment
         AlphaFragment alphaFragment = (AlphaFragment) getSupportFragmentManager()
@@ -99,7 +118,17 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
             mAlphaFragment = AlphaFragment.newInstance();
         }
 
+        WrapperFragment betaWrapper = (WrapperFragment) getSupportFragmentManager()
+                .findFragmentByTag(getFragmentTag(mViewPager.getId(), 1));
+        if (betaWrapper != null) {
+            Log.d(TAG,"found an old beta wrapper, using it");
+            mBetaWrapper = betaWrapper;
+        } else {
+            mBetaWrapper = new WrapperFragment();
+        }
         mBetaFragment = BetaFragment.newInstance();
+        mBetaNavigator = new WrapperFragmentNavigator(mBetaFragment);
+        mBetaWrapper.setNavigator(mBetaNavigator);
 
         GammaFragment gammaFragment = (GammaFragment) getSupportFragmentManager()
                 .findFragmentByTag(getFragmentTag(mViewPager.getId(), 2));
@@ -112,6 +141,16 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
 
         GammaPresenter gammaPresenter = new GammaPresenter(mGammaFragment, mDataModel);
         mGammaFragment.setPresenter(gammaPresenter);
+        Log.d(TAG,"gamma presenter assigned");
+
+        DeltaFragment deltaFragment = (DeltaFragment) getSupportFragmentManager()
+                .findFragmentByTag(getFragmentTag(mViewPager.getId(), 3));
+        if (deltaFragment != null) {
+            Log.d(TAG,"found an old delta fragment, will try using it");
+            mDeltaFragment = deltaFragment;
+        } else {
+            mDeltaFragment = DeltaFragment.newInstance();
+        }
     }
 
     @NonNull
@@ -122,6 +161,24 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
     @Override
     public void switchToView(int viewPosition) {
         mViewPager.setCurrentItem(viewPosition);
+    }
+
+    @Override
+    public void launchBetaSubFragment1() {
+        mBetaWrapper.addFragment(new SubFragment1());
+    }
+
+    @Override
+    public void launchBetaSubFragment2() {
+        mBetaWrapper.addFragment(new SubFragment2());
+    }
+
+    @Override
+    public void launchAdapterSubFragment() {
+        // this requires a FragmentStatePagerAdapter to work
+        mDataModel.setViewState(DataModel.VIEW_STATE_SUBFRAGMENT1);
+        mViewPager.setAdapter(mAdapter);
+        mViewPager.setCurrentItem(3);
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -135,16 +192,23 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
             if (position == 0) {
                 return mAlphaFragment;
             } else if (position == 1) {
-                return mBetaFragment;
+                return mBetaWrapper;
             } else if (position == 2) {
                 return mGammaFragment;
+            } else if (position == 3) {
+                Log.d(TAG,"get item, state is " + mDataModel.getViewState());
+                if (mDataModel.getViewState() == DataModel.VIEW_STATE_SUBFRAGMENT1) {
+                    return new SubFragment1();
+                } else {
+                    return mDeltaFragment;
+                }
             }
             return null;
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
     }
 }

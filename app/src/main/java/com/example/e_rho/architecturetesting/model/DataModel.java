@@ -12,6 +12,9 @@ public class DataModel {
     ArrayList<String> mStrings;
     private Context mContext;
     private ArrayList<CallbackListener> mListeners;
+    private int mViewState;
+
+    public static final int VIEW_STATE_SUBFRAGMENT1 = 1;
 
     public DataModel(Context context) {
         mContext = context;
@@ -49,6 +52,14 @@ public class DataModel {
 
     public void removeCallbackListener(CallbackListener listener) {
         mListeners.remove(listener);
+    }
+
+    public void setViewState(int state) {
+        mViewState = state;
+    }
+
+    public int getViewState() {
+        return mViewState;
     }
 
     public interface CallbackListener {
