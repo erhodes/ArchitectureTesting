@@ -9,6 +9,7 @@ import java.util.List;
 public interface GammaContract {
     interface Presenter {
         void start();
+        void stop();
         void onAddString();
     }
     interface View {

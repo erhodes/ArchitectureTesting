@@ -13,12 +13,17 @@ public class GammaPresenter implements GammaContract.Presenter, DataModel.Callba
     public GammaPresenter(GammaContract.View view, DataModel dataModel) {
         mView = view;
         mDataModel = dataModel;
-        mDataModel.addCallbackListener(this);
     }
 
     @Override
     public void start() {
         mView.displayStrings(mDataModel.getStrings());
+        mDataModel.addCallbackListener(this);
+    }
+
+    @Override
+    public void stop() {
+        mDataModel.removeCallbackListener(this);
     }
 
     @Override

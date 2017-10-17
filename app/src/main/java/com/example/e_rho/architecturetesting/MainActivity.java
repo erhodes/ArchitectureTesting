@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import com.example.e_rho.architecturetesting.alpha.AlphaFragment;
 import com.example.e_rho.architecturetesting.beta.BetaFragment;
 import com.example.e_rho.architecturetesting.delta.DeltaFragment;
+import com.example.e_rho.architecturetesting.delta.DeltaSubfragment;
 import com.example.e_rho.architecturetesting.gamma.GammaFragment;
 import com.example.e_rho.architecturetesting.gamma.GammaPresenter;
 import com.example.e_rho.architecturetesting.model.DataModel;
@@ -25,11 +26,14 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
     private BottomNavigationView mBottomNavView;
     private AlphaFragment mAlphaFragment;
     private BetaFragment mBetaFragment;
-    private GammaFragment mGammaFragment;
-    private DeltaFragment mDeltaFragment;
-
     private WrapperFragment mBetaWrapper;
     private WrapperFragmentNavigator mBetaNavigator;
+    private GammaFragment mGammaFragment;
+    private DeltaFragment mDeltaFragment;
+    private WrapperFragment mDeltaWrapper;
+    private WrapperFragmentNavigator mDeltaNavigator;
+
+
 
     private ViewPager mViewPager;
     private ViewPagerAdapter mAdapter;
@@ -102,9 +106,10 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
     public void onBackPressed() {
         if (mViewPager.getCurrentItem() == 1 && mBetaNavigator.onBackPressed()) {
             return;
+        } else if (mViewPager.getCurrentItem() == 3 && mDeltaNavigator.onBackPressed()) {
+            return;
         }
         super.onBackPressed();
-//        mBetaWrapper.popFragment();
     }
 
     protected void initializeFragments() {
@@ -143,14 +148,17 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
         mGammaFragment.setPresenter(gammaPresenter);
         Log.d(TAG,"gamma presenter assigned");
 
-        DeltaFragment deltaFragment = (DeltaFragment) getSupportFragmentManager()
+        WrapperFragment deltaWrapper = (WrapperFragment) getSupportFragmentManager()
                 .findFragmentByTag(getFragmentTag(mViewPager.getId(), 3));
-        if (deltaFragment != null) {
+        if (deltaWrapper != null) {
             Log.d(TAG,"found an old delta fragment, will try using it");
-            mDeltaFragment = deltaFragment;
+            mDeltaWrapper = deltaWrapper;
         } else {
-            mDeltaFragment = DeltaFragment.newInstance();
+            mDeltaWrapper = new WrapperFragment();
         }
+        mDeltaFragment = DeltaFragment.newInstance();
+        mDeltaNavigator = new WrapperFragmentNavigator(mDeltaFragment);
+        mDeltaWrapper.setNavigator(mDeltaNavigator);
     }
 
     @NonNull
@@ -171,6 +179,11 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
     @Override
     public void launchBetaSubFragment2() {
         mBetaWrapper.addFragment(new SubFragment2());
+    }
+
+    @Override
+    public void launchDeltaSubFragment() {
+        mDeltaWrapper.addFragment(new DeltaSubfragment());
     }
 
     @Override
@@ -196,12 +209,7 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
             } else if (position == 2) {
                 return mGammaFragment;
             } else if (position == 3) {
-                Log.d(TAG,"get item, state is " + mDataModel.getViewState());
-                if (mDataModel.getViewState() == DataModel.VIEW_STATE_SUBFRAGMENT1) {
-                    return new SubFragment1();
-                } else {
-                    return mDeltaFragment;
-                }
+                return mDeltaWrapper;
             }
             return null;
         }

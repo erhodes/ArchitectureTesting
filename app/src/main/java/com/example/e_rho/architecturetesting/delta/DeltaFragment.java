@@ -43,7 +43,7 @@ public class DeltaFragment extends BaseFragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mNavigator.launchAdapterSubFragment();
+                mNavigator.launchDeltaSubFragment();
             }
         });
 

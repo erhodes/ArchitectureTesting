@@ -13,5 +13,6 @@ public interface CentralNavigator {
 
     void launchBetaSubFragment1();
     void launchBetaSubFragment2();
+    void launchDeltaSubFragment();
     void launchAdapterSubFragment();
 }

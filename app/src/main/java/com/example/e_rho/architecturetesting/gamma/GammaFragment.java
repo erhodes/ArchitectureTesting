@@ -82,6 +82,12 @@ public class GammaFragment extends BaseFragment implements GammaContract.View{
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        mGammaPresenter.stop();
+    }
+
+    @Override
     public void displayStrings(List<String> strings) {
         mAdapter.clear();
         mAdapter.addAll(strings);
