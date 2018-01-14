@@ -14,4 +14,6 @@
     <string name="filler">Filler</string>
     <string name="add_string">Add String</string>
     <string name="engage">Engage!</string>
+
+    <string name="signed_in_as">Signed in as:</string>
 </resources>

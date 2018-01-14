@@ -18,7 +18,6 @@ public class BetaFragment extends BaseFragment {
     public static final String TAG = "Eric-Beta";
 
     private Button mButton;
-    private BetaPresenter mBetaPresenter;
 
     public static BetaFragment newInstance() {
         return new BetaFragment();
@@ -47,7 +46,6 @@ public class BetaFragment extends BaseFragment {
             }
         });
 
-        mBetaPresenter = new BetaPresenter();
         return view;
     }
 

@@ -16,7 +16,6 @@ import com.example.e_rho.architecturetesting.beta.BetaFragment;
 import com.example.e_rho.architecturetesting.delta.DeltaFragment;
 import com.example.e_rho.architecturetesting.delta.DeltaSubfragment;
 import com.example.e_rho.architecturetesting.gamma.GammaFragment;
-import com.example.e_rho.architecturetesting.gamma.GammaPresenter;
 import com.example.e_rho.architecturetesting.model.DataModel;
 import com.example.e_rho.architecturetesting.wrapper.WrapperFragment;
 
@@ -143,9 +142,6 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
         } else {
             mGammaFragment = GammaFragment.newInstance();
         }
-
-        GammaPresenter gammaPresenter = new GammaPresenter(mGammaFragment, mDataModel);
-        mGammaFragment.setPresenter(gammaPresenter);
         Log.d(TAG,"gamma presenter assigned");
 
         WrapperFragment deltaWrapper = (WrapperFragment) getSupportFragmentManager()
