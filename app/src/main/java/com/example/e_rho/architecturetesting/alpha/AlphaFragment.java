@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +17,10 @@ import android.widget.TextView;
 
 import com.example.e_rho.architecturetesting.BaseFragment;
 import com.example.e_rho.architecturetesting.CentralNavigator;
-import com.example.e_rho.architecturetesting.Injection;
 import com.example.e_rho.architecturetesting.R;
 import com.example.e_rho.architecturetesting.model.User;
 
 import java.util.List;
-import java.util.Observer;
 
 /**
  * Created by e_rho on 10/11/2017.
@@ -33,7 +30,7 @@ public class AlphaFragment extends BaseFragment {
 
     private AlphaViewModel mViewModel;
     private ListView mListView;
-    private ArrayAdapter<String> mAdapter;
+    private ArrayAdapter<User> mAdapter;
     private Button mButton;
     private TextView mTextView;
 
@@ -65,7 +62,17 @@ public class AlphaFragment extends BaseFragment {
         mViewModel.getUser().observe(this, new android.arch.lifecycle.Observer<User>() {
             @Override
             public void onChanged(@Nullable User user) {
-                update(user);
+                if (user != null)
+                    updateCurrentUser(user);
+            }
+        });
+
+        mViewModel.getAllUsers().observe(this, new android.arch.lifecycle.Observer<List<User>>() {
+            @Override
+            public void onChanged(@Nullable List<User> users) {
+                if (users != null) {
+                    updateAllUserList(users);
+                }
             }
         });
     }
@@ -91,21 +98,21 @@ public class AlphaFragment extends BaseFragment {
         return view;
     }
 
-    public void update(User user) {
+    public void updateCurrentUser(User user) {
         Log.d(TAG,"updated! to " + user.getFirstName());
         String text = getString(R.string.signed_in_as) + " " + user.getFirstName() + " " + user.getLastName();
         mTextView.setText(text);
     }
 
-    public void displayStrings(List<String> strings) {
+    public void updateAllUserList(List<User> strings) {
         mAdapter.clear();
         mAdapter.addAll(strings);
         mAdapter.notifyDataSetChanged();
     }
 
-    private class StringAdapter extends ArrayAdapter<String> {
+    private class UserAdapter extends ArrayAdapter<User> {
 
-        public StringAdapter(@NonNull Context context, @LayoutRes int resource) {
+        public UserAdapter(@NonNull Context context, @LayoutRes int resource) {
             super(context, resource);
         }
     }

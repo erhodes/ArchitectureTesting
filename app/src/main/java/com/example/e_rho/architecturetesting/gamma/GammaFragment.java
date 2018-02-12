@@ -3,6 +3,8 @@ package com.example.e_rho.architecturetesting.gamma;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.ListView;
 
 import com.example.e_rho.architecturetesting.BaseFragment;
 import com.example.e_rho.architecturetesting.R;
+import com.example.e_rho.architecturetesting.model.User;
 
 import java.util.List;
 
@@ -24,7 +27,7 @@ public class GammaFragment extends BaseFragment {
     private GammaViewModel mViewModel;
     private ListView mListView;
     private ArrayAdapter<String> mAdapter;
-    private Button mButton;
+    private User mUser;
 
     public static GammaFragment newInstance() {
         return new GammaFragment();
@@ -40,10 +43,24 @@ public class GammaFragment extends BaseFragment {
         return true;
     }
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mViewModel = ViewModelProviders.of(this).get(GammaViewModel.class);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        Log.d(TAG,"onActivityCreated");
+        mViewModel.getUser().observe(this, new android.arch.lifecycle.Observer<User>() {
+            @Override
+            public void onChanged(@Nullable User user) {
+                mUser = user;
+            }
+        });
     }
 
     @Override
@@ -55,11 +72,21 @@ public class GammaFragment extends BaseFragment {
         mAdapter = new ArrayAdapter<>(getActivity(), R.layout.listview_string);
         mListView.setAdapter(mAdapter);
 
-        mButton = (Button) view.findViewById(R.id.button);
-        mButton.setOnClickListener(new View.OnClickListener() {
+        Button changeNameButton = (Button) view.findViewById(R.id.button);
+        changeNameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewModel.setUserName("TIMOTHY");
+                mUser.setFirstName("TIMOTHY");
+                mViewModel.addUser(mUser);
+            }
+        });
+
+        Button addUserButton = (Button) view.findViewById(R.id.addUserButton);
+        addUserButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                User user = new User("John", "Doe");
+                mViewModel.addUser(user);
             }
         });
 

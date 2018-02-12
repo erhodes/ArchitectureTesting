@@ -7,6 +7,8 @@ import com.example.e_rho.architecturetesting.MyApplication;
 import com.example.e_rho.architecturetesting.MyRepository;
 import com.example.e_rho.architecturetesting.model.User;
 
+import java.util.List;
+
 /**
  * Created by e_rho on 1/12/2018.
  */
@@ -20,5 +22,9 @@ public class AlphaViewModel extends ViewModel {
 
     public LiveData<User> getUser() {
         return mRepository.getUser();
+    }
+
+    public LiveData<List<User>> getAllUsers() {
+        return mRepository.getAllUsers();
     }
 }

@@ -16,7 +16,6 @@ import com.example.e_rho.architecturetesting.beta.BetaFragment;
 import com.example.e_rho.architecturetesting.delta.DeltaFragment;
 import com.example.e_rho.architecturetesting.delta.DeltaSubfragment;
 import com.example.e_rho.architecturetesting.gamma.GammaFragment;
-import com.example.e_rho.architecturetesting.model.DataModel;
 import com.example.e_rho.architecturetesting.wrapper.WrapperFragment;
 
 public class MainActivity extends AppCompatActivity implements CentralNavigator {
@@ -31,12 +30,9 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
     private DeltaFragment mDeltaFragment;
     private WrapperFragment mDeltaWrapper;
     private WrapperFragmentNavigator mDeltaNavigator;
-
-
-
+    
     private ViewPager mViewPager;
     private ViewPagerAdapter mAdapter;
-    private DataModel mDataModel;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -66,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
         super.onCreate(savedInstanceState);
         Log.d("Eric","MainActivity onCreate");
         setContentView(R.layout.activity_main);
-
-        mDataModel = Injection.provideDataModel(this);
 
         if (savedInstanceState != null) {
             Log.d("Eric","this is a weird restart, with lingering fragments: " + getSupportFragmentManager().getFragments().size());
@@ -185,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
     @Override
     public void launchAdapterSubFragment() {
         // this requires a FragmentStatePagerAdapter to work
-        mDataModel.setViewState(DataModel.VIEW_STATE_SUBFRAGMENT1);
         mViewPager.setAdapter(mAdapter);
         mViewPager.setCurrentItem(3);
     }
