@@ -40,7 +40,7 @@ public class GammaFragment extends BaseFragment {
 
     @Override
     public boolean printLogs() {
-        return true;
+        return false;
     }
 
     @Override

@@ -22,10 +22,6 @@ public class GammaViewModel extends ViewModel {
         return mRepository.getUser();
     }
 
-    public void setUserName(String name) {
-        mRepository.updateUserName(name);
-    }
-
     public void addUser(User user) {
         mRepository.addUser(user);
     }

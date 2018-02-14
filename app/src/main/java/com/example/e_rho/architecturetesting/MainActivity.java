@@ -1,7 +1,9 @@
 package com.example.e_rho.architecturetesting;
 
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +18,7 @@ import com.example.e_rho.architecturetesting.beta.BetaFragment;
 import com.example.e_rho.architecturetesting.delta.DeltaFragment;
 import com.example.e_rho.architecturetesting.delta.DeltaSubfragment;
 import com.example.e_rho.architecturetesting.gamma.GammaFragment;
+import com.example.e_rho.architecturetesting.model.User;
 import com.example.e_rho.architecturetesting.wrapper.WrapperFragment;
 
 public class MainActivity extends AppCompatActivity implements CentralNavigator {
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
     private DeltaFragment mDeltaFragment;
     private WrapperFragment mDeltaWrapper;
     private WrapperFragmentNavigator mDeltaNavigator;
-    
+
     private ViewPager mViewPager;
     private ViewPagerAdapter mAdapter;
 
@@ -63,10 +66,6 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
         Log.d("Eric","MainActivity onCreate");
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState != null) {
-            Log.d("Eric","this is a weird restart, with lingering fragments: " + getSupportFragmentManager().getFragments().size());
-        }
-
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
         mAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
@@ -87,6 +86,13 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
 
         mBottomNavView = (BottomNavigationView) findViewById(R.id.navigation);
         mBottomNavView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        MyApplication.getRepository().getUser().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(@Nullable User user) {
+                Log.d(TAG, "A legitimate update occurs!");
+            }
+        });
     }
 
     @Override

@@ -1,5 +1,8 @@
 package com.example.e_rho.architecturetesting.alpha;
 
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
@@ -58,16 +61,16 @@ public class AlphaFragment extends BaseFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Log.d(TAG,"onActivityCreated");
-        mViewModel.getUser().observe(this, new android.arch.lifecycle.Observer<User>() {
+        Log.d(TAG, "onActivityCreated");
+        mViewModel.getUser().removeObservers(this);
+        mViewModel.getUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable User user) {
                 if (user != null)
                     updateCurrentUser(user);
             }
         });
-
-        mViewModel.getAllUsers().observe(this, new android.arch.lifecycle.Observer<List<User>>() {
+        mViewModel.getAllUsers().observe(this, new Observer<List<User>>() {
             @Override
             public void onChanged(@Nullable List<User> users) {
                 if (users != null) {
@@ -77,6 +80,7 @@ public class AlphaFragment extends BaseFragment {
         });
     }
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d(TAG,"onCreateView");

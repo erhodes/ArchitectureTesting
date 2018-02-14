@@ -19,29 +19,26 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 
 public class MyRepository {
-    private MutableLiveData<User> mUser;
+    private LiveData<User> mUser;
+    private LiveData<List<User>> mUserList;
     private UserDao mUserDao;
     private Executor mExecutor;
 
     public MyRepository(CentralDatabase centralDatabase) {
         mUserDao = centralDatabase.userDao();
+        mUser = mUserDao.load(1);
+        mUserList = mUserDao.loadAll();
 
 //        mUser = new MutableLiveData<>();
 //        mUser.setValue(new User("John", "Doe"));
     }
 
     public LiveData<User> getUser() {
-        return mUserDao.load(1);
+        return mUser;
     }
 
     public LiveData<List<User>> getAllUsers() {
-        return mUserDao.loadAll();
-    }
-
-    public void updateUserName(String name) {
-        User user = mUser.getValue();
-        user.setFirstName(name);
-        mUser.setValue(user);
+        return mUserList;
     }
 
     public void addUser(final User user) {
