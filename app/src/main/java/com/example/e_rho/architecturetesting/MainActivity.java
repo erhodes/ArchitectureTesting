@@ -21,6 +21,10 @@ import com.example.e_rho.architecturetesting.gamma.GammaFragment;
 import com.example.e_rho.architecturetesting.model.User;
 import com.example.e_rho.architecturetesting.wrapper.WrapperFragment;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+
 public class MainActivity extends AppCompatActivity implements CentralNavigator {
     private static final String TAG = "Eric-Main";
 
@@ -37,13 +41,14 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
     private ViewPager mViewPager;
     private ViewPagerAdapter mAdapter;
 
+    @Inject MyRepository mRepository;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             // don't reselect
-            Log.d("Eric","onNavigationItemSelected " + item.getTitle());
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mViewPager.setCurrentItem(0);
@@ -62,8 +67,8 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
-        Log.d("Eric","MainActivity onCreate");
         setContentView(R.layout.activity_main);
 
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
@@ -87,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
         mBottomNavView = (BottomNavigationView) findViewById(R.id.navigation);
         mBottomNavView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        MyApplication.getRepository().getUser().observe(this, new Observer<User>() {
+        mRepository.getUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable User user) {
                 Log.d(TAG, "A legitimate update occurs!");
@@ -98,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements CentralNavigator 
     @Override
     protected void onResume(){
         super.onResume();
-        Log.d("Eric","MainActivity onResume");
     }
 
     @Override

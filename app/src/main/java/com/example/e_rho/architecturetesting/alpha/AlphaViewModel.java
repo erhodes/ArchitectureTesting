@@ -9,15 +9,17 @@ import com.example.e_rho.architecturetesting.model.User;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Created by e_rho on 1/12/2018.
  */
 
 public class AlphaViewModel extends ViewModel {
-    private MyRepository mRepository;
+    @Inject MyRepository mRepository;
 
     public AlphaViewModel() {
-        mRepository = MyApplication.getRepository();
+        MyApplication.getComponent().inject(this);
     }
 
     public LiveData<User> getUser() {

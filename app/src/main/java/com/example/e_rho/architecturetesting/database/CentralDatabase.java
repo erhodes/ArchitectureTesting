@@ -8,7 +8,7 @@ import com.example.e_rho.architecturetesting.model.User;
 /**
  * Created by e_rho on 1/13/2018.
  */
-@Database(entities = {User.class}, version = 1)
+@Database(entities = {User.class}, version = 1, exportSchema = false)
 public abstract class CentralDatabase extends RoomDatabase {
     public abstract UserDao userDao();
 }
