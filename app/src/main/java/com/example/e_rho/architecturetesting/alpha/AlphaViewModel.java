@@ -29,4 +29,8 @@ public class AlphaViewModel extends ViewModel {
     public LiveData<List<User>> getAllUsers() {
         return mRepository.getAllUsers();
     }
+
+    public void addUser(User user) {
+        mRepository.addUser(user);
+    }
 }

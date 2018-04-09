@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.example.e_rho.architecturetesting.BaseFragment;
 import com.example.e_rho.architecturetesting.CentralNavigator;
 import com.example.e_rho.architecturetesting.R;
+import com.example.e_rho.architecturetesting.model.Attribute;
 import com.example.e_rho.architecturetesting.model.User;
 
 import java.util.List;
@@ -61,7 +62,6 @@ public class AlphaFragment extends BaseFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Log.d(TAG, "onActivityCreated");
         mViewModel.getUser().removeObservers(this);
         mViewModel.getUser().observe(this, new Observer<User>() {
             @Override
@@ -95,7 +95,9 @@ public class AlphaFragment extends BaseFragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mNavigator.switchToView(CentralNavigator.FRAGMENT_GAMMA);
+                Attribute strength = new Attribute("Strength", "str", 4);
+                User user = new User("John", "Doe", strength);
+                mViewModel.addUser(user);
             }
         });
 

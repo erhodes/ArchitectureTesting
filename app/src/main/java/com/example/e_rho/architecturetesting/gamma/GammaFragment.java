@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.example.e_rho.architecturetesting.BaseFragment;
 import com.example.e_rho.architecturetesting.R;
+import com.example.e_rho.architecturetesting.model.Attribute;
 import com.example.e_rho.architecturetesting.model.User;
 
 import java.util.List;
@@ -85,7 +86,8 @@ public class GammaFragment extends BaseFragment {
         addUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                User user = new User("John", "Doe");
+                Attribute strength = new Attribute("Strength", "str", 4);
+                User user = new User("John", "Doe", strength);
                 mViewModel.addUser(user);
             }
         });

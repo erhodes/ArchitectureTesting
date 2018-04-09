@@ -13,15 +13,17 @@ public class User {
     @PrimaryKey(autoGenerate = true)
     private int uid;
 
+    private Attribute strength;
     private String firstName, lastName;
 
-    public User(String firstName, String lastName){
+    public User(String firstName, String lastName, Attribute strength){
         this.firstName = firstName;
         this.lastName = lastName;
+        this.strength = strength;
     }
 
     public String toString() {
-        return String.format(Locale.CANADA,"%d: %s %s", uid, firstName, lastName);
+        return String.format(Locale.CANADA,"%d: %s %s. Strength %d", uid, firstName, lastName, strength.getFinalValue());
     }
 
     public void setFirstName(String firstName) {
@@ -44,5 +46,13 @@ public class User {
 
     public void setUid(int uid) {
         this.uid = uid;
+    }
+
+    public Attribute getStrength() {
+        return strength;
+    }
+
+    public void setStrength(Attribute attribute) {
+        strength = attribute;
     }
 }
