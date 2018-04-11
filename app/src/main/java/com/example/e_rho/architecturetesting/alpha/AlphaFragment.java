@@ -24,6 +24,7 @@ import com.example.e_rho.architecturetesting.R;
 import com.example.e_rho.architecturetesting.model.Attribute;
 import com.example.e_rho.architecturetesting.model.User;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -96,7 +97,10 @@ public class AlphaFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Attribute strength = new Attribute("Strength", "str", 4);
-                User user = new User("John", "Doe", strength);
+                strength.calculateFinalValue();
+                HashMap<String, Attribute> attributes = new HashMap<>();
+                attributes.put("str",strength);
+                User user = new User("John", "Doe", attributes);
                 mViewModel.addUser(user);
             }
         });

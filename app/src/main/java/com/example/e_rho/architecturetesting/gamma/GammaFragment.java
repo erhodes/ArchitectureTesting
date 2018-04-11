@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.e_rho.architecturetesting.BaseFragment;
 import com.example.e_rho.architecturetesting.R;
@@ -29,6 +30,7 @@ public class GammaFragment extends BaseFragment {
     private ListView mListView;
     private ArrayAdapter<String> mAdapter;
     private User mUser;
+    private TextView mNameView;
 
     public static GammaFragment newInstance() {
         return new GammaFragment();
@@ -59,7 +61,11 @@ public class GammaFragment extends BaseFragment {
         mViewModel.getUser().observe(this, new android.arch.lifecycle.Observer<User>() {
             @Override
             public void onChanged(@Nullable User user) {
+                if (user == null) {
+                    return;
+                }
                 mUser = user;
+                updateUser(user);
             }
         });
     }
@@ -73,6 +79,7 @@ public class GammaFragment extends BaseFragment {
         mAdapter = new ArrayAdapter<>(getActivity(), R.layout.listview_string);
         mListView.setAdapter(mAdapter);
 
+        mNameView = view.findViewById(R.id.charNameText);
         Button changeNameButton = (Button) view.findViewById(R.id.button);
         changeNameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,13 +93,22 @@ public class GammaFragment extends BaseFragment {
         addUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Attribute strength = new Attribute("Strength", "str", 4);
-                User user = new User("John", "Doe", strength);
-                mViewModel.addUser(user);
+                // this does nothing
             }
         });
 
         return view;
+    }
+
+    private void updateUser(User user) {
+        mNameView.setText(user.getFullName());
+        // todo: list all the attributes
+        mAdapter.clear();
+        for (Attribute attribute : user.getAttributes().values()) {
+            mAdapter.add(attribute.toString());
+        }
+        mAdapter.notifyDataSetChanged();
+        mListView.invalidate();
     }
 
     public void displayStrings(List<String> strings) {

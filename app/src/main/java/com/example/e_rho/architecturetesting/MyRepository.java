@@ -28,9 +28,6 @@ public class MyRepository {
         mUserDao = centralDatabase.userDao();
         mUser = mUserDao.load(1);
         mUserList = mUserDao.loadAll();
-
-//        mUser = new MutableLiveData<>();
-//        mUser.setValue(new User("John", "Doe"));
     }
 
     public LiveData<User> getUser() {
@@ -45,7 +42,6 @@ public class MyRepository {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                Log.d("Eric","saving user " + user);
                 mUserDao.save(user);
                 return null;
             }

@@ -3,6 +3,7 @@ package com.example.e_rho.architecturetesting.model;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 /**
@@ -13,19 +14,22 @@ public class User {
     @PrimaryKey(autoGenerate = true)
     private int uid;
 
-    private Attribute strength;
+    private HashMap<String, Attribute> attributes;
     private String firstName, lastName;
 
-    public User(String firstName, String lastName, Attribute strength){
+    public User(String firstName, String lastName, HashMap<String, Attribute> attributes){
         this.firstName = firstName;
         this.lastName = lastName;
-        this.strength = strength;
+        this.attributes = attributes;
     }
 
     public String toString() {
-        return String.format(Locale.CANADA,"%d: %s %s. Strength %d", uid, firstName, lastName, strength.getFinalValue());
+        return String.format(Locale.CANADA,"%d: %s %s. Strength %d", uid, firstName, lastName, attributes.get("str").getFinalValue());
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -48,11 +52,11 @@ public class User {
         this.uid = uid;
     }
 
-    public Attribute getStrength() {
-        return strength;
+    public HashMap<String, Attribute> getAttributes() {
+        return attributes;
     }
 
-    public void setStrength(Attribute attribute) {
-        strength = attribute;
+    public void setAttributes(HashMap<String, Attribute> attributes) {
+        this.attributes = attributes;
     }
 }
